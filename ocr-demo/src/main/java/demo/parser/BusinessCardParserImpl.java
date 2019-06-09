@@ -1,7 +1,5 @@
 package demo.parser;
 
-import java.io.IOException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.logging.log4j.LogManager;
@@ -11,10 +9,6 @@ import demo.data.contact.ContactInfo;
 import demo.data.contact.ContactInfoBuilder;
 import demo.data.contact.ContactInfoBuilderFactory;
 import demo.data.contact.ContactInfoBuilderFactoryImpl;
-import demo.scanner.ui.ScannerUI;
-import opennlp.tools.namefind.NameFinderME;
-import opennlp.tools.namefind.TokenNameFinderModel;
-import opennlp.tools.util.Span;
 
 /**
  * Implementation of {@link BusinessCardParser}<p>
@@ -24,19 +18,9 @@ import opennlp.tools.util.Span;
  * I used my own implementation of the OpenNLP classes based on the posted solution.
  */
 public class BusinessCardParserImpl implements BusinessCardParser {
-    private static final Logger log = LogManager.getLogger(ScannerUI.class);
+    private static final Logger log = LogManager.getLogger(BusinessCardParserImpl.class);
 
     private static BusinessCardParserImpl instance;
-    private static NameFinderME nameFinder;
-
-    static {
-        try {
-            nameFinder =  new NameFinderME(new TokenNameFinderModel(ClassLoader.getSystemResourceAsStream("en-ner-person.bin")));
-        }
-        catch (final IOException ex) {
-            log.error("Error loading name library: " + ex.getMessage(), ex);
-        }
-    }
 
     /**
      * @return the {@link BusinessCardParser} instance
@@ -56,6 +40,7 @@ public class BusinessCardParserImpl implements BusinessCardParser {
 
     private final EmailValidator emailValidator = EmailValidator.getInstance();
     private final ContactInfoBuilderFactory contactInfoBuilderFactory = new ContactInfoBuilderFactoryImpl();
+    private final NameEvaluator nameEvaluator = new NameEvaluator();
 
     /**
      * @see demo.parser.BusinessCardParser#getContactInfo(java.lang.String)
@@ -67,21 +52,16 @@ public class BusinessCardParserImpl implements BusinessCardParser {
         }
 
         // separate lines of the document
+        final String[] lines = document.split("\\r?\\n");
         final ContactInfoBuilder contactInfoBuilder = contactInfoBuilderFactory.getBuilder();
-        final String[] lines = StringUtils.splitByWholeSeparator(document, "\n");
-        double currentHighProb = 0;
-        String name = null;
         boolean foundEmail = false;
         boolean foundPhoneNumber = false;
 
+        // make sure we clean out any previously calculated name
+        nameEvaluator.reset();
+
         // iterate over each line, try to find the phone number, email, and name
         for (final String line : lines) {
-            final double currentNameProb = calculateNameProbability(line);
-
-            if (currentNameProb > currentHighProb) {
-                name = line;
-                currentHighProb = currentNameProb;
-            }
 
             if ((!foundEmail) && emailValidator.isValid(line)) {
                 contactInfoBuilder.emailAddress(line);
@@ -92,6 +72,7 @@ public class BusinessCardParserImpl implements BusinessCardParser {
                 }
             }
             else if (!foundPhoneNumber) {
+                // this is probably sufficient for a "business card" implementation, but a more robust regex would be better for a general case
                 final String digits = line.replaceAll("[^\\d]", "");
 
                 // a phone number can be 10 to 15 digits, depending on the country code; ignore potential "Fax" number
@@ -103,9 +84,16 @@ public class BusinessCardParserImpl implements BusinessCardParser {
                         log.debug("found phone number=" + digits);
                     }
                 }
+                else {
+                    nameEvaluator.evaluate(line);
+                }
+            }
+            else {
+                nameEvaluator.evaluate(line);
             }
         }
 
+        final String name = nameEvaluator.getName();
         if (StringUtils.isNotBlank(name)) {
             contactInfoBuilder.name(name);
 
@@ -120,33 +108,5 @@ public class BusinessCardParserImpl implements BusinessCardParser {
 
         // generate the ContactInfo and return it
         return contactInfoBuilder.build();
-    }
-
-    /**
-     * Calculates the probability that the specified line contains a person's name. Returns the calculated
-     * probability.
-     *
-     * @param line
-     *          the current line of data being parsed/examined
-     * @return the probability that the line contains a person's name
-     */
-    private double calculateNameProbability(final String line) {
-        final String[] lineParts = line.split(" ");
-        final Span[] spans = nameFinder.find(lineParts);
-        double totalProb = 0;
-
-        if (spans != null && spans.length > 0) {
-            final double[] probs = nameFinder.probs();
-
-            for (final double prob : probs) {
-                totalProb += prob;
-            }
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("line=" + line + ", totalProb=" + totalProb);
-        }
-
-        return totalProb;
     }
 }

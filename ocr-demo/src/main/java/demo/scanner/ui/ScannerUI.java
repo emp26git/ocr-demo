@@ -12,6 +12,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -129,6 +130,17 @@ public class ScannerUI extends JFrame {
                                     if (log.isDebugEnabled()) {
                                         log.debug("generated ContactInfo=" + contactInfo);
                                     }
+
+                                    String message = "No ContactInfo created.";
+                                    if (contactInfo != null) {
+                                        final StringBuilder msgBuf = new StringBuilder("Name: ");
+
+                                        msgBuf.append(contactInfo.getName()).append("\nEmail: ").append(contactInfo.getEmailAddress())
+                                            .append("\nPhone: ").append(contactInfo.getPhoneNumber());
+                                        message = msgBuf.toString();
+
+                                    }
+                                    JOptionPane.showMessageDialog(mainPanel, message);
                                 }
                                 catch (final Exception ex) {
                                     ex.printStackTrace();
