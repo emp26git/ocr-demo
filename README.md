@@ -7,14 +7,20 @@ In order to support user input, I created a Java Swing UI with a JTextArea compo
 After the data has been entered, clicking the Scan button will trigger the processing of the data by the BusinessCardParser class. 
 Once the data has been processed, a notification dialog is displayed to show the processing results for the Name, Phone, and Email.
 
-The application is a stand-alone Java Jar file that can be built with Maven:
+To access the application source, clone the Git repository to a directory on your local machine:
+```
+% cd folder/to/clone-into/
+% git clone https://github.com/emp26git/ocr-demo.git
+```
+
+After cloning the repository, the application can be built using Maven:
 ```
 % mvn clean package
 ```
 
 This should build the executable jar file:
 ```
-ocr-demo/target/ocr-demo-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+target/ocr-demo-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 To execute the application, "cd" to the target directory and run the executable jar:
