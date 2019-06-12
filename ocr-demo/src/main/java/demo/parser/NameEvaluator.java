@@ -11,8 +11,8 @@ import opennlp.tools.util.Span;
 
 /**
  * Evaluates the likelihood that a specified text string contains a person's name, and keeps
- * a reference to the string having the highest probability. The probability starts at 0 and
- * can be reset using the
+ * a reference to the string having the highest probability. The probability starts at 0.
+ * Both the current probability and saved name can be reset using the {@link #reset()} method.
  */
 public class NameEvaluator {
     private static final Logger log = LogManager.getLogger(NameEvaluator.class);
@@ -67,10 +67,12 @@ public class NameEvaluator {
      * @param text
      */
     public void evaluate(final String text) {
-        final double currentNameProb = calculateNameProbability(text);
-        if (currentNameProb > this.nameProbability) {
-            name = text;
-            this.nameProbability = currentNameProb;
+        if (text != null) {
+            final double currentNameProb = calculateNameProbability(text);
+            if (currentNameProb > this.nameProbability) {
+                this.name = text;
+                this.nameProbability = currentNameProb;
+            }
         }
     }
 
@@ -78,7 +80,7 @@ public class NameEvaluator {
      * @return the probability that the currently saved text is a person's name
      */
     public double getCurrentNameProbability() {
-        return nameProbability;
+        return this.nameProbability;
     }
 
     /**

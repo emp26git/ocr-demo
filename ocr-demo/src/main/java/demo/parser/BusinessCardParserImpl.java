@@ -57,7 +57,7 @@ public class BusinessCardParserImpl implements BusinessCardParser {
         boolean foundEmail = false;
         boolean foundPhoneNumber = false;
 
-        // make sure we clean out any previously calculated name
+        // make sure we clean out any previously calculated name probability
         nameEvaluator.reset();
 
         // iterate over each line, try to find the phone number, email, and name
@@ -89,6 +89,7 @@ public class BusinessCardParserImpl implements BusinessCardParser {
                 }
             }
             else {
+                // check for name last since it is more intensive
                 nameEvaluator.evaluate(line);
             }
         }

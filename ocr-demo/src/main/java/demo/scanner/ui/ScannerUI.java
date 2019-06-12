@@ -27,7 +27,10 @@ import demo.parser.BusinessCardParser;
 import demo.parser.BusinessCardParserImpl;
 
 /**
- * Creates the UI used to collect the business card data.
+ * Creates the UI used to collect the business card data. The data entry is performed using a JTextArea which
+ * simulates the scanner. Once the text has been entered, clicking the "Scan" button will kick off the
+ * BusinessCardParser to parse the text and attempt to find the contact person's name, phone, and email.
+ * The results of parsing the data will be displayed in a pop-up dialog.
  */
 public class ScannerUI extends JFrame {
 
@@ -120,6 +123,7 @@ public class ScannerUI extends JFrame {
                             log.debug("submitted text:\n" + submittedText);
                         }
 
+                        // move this to a separate thread in order to not block UI execution
                         EventQueue.invokeLater(new Runnable() {
                             @Override
                             public void run() {

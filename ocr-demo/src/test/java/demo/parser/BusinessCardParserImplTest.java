@@ -86,7 +86,6 @@ class BusinessCardParserImplTest {
             return content;
         }
         catch (final IOException ex) {
-            // TODO Auto-generated catch block
             ex.printStackTrace();
         }
 
