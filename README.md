@@ -40,3 +40,7 @@ This application requires:
 - Maven 3.6.1 or higher
 - JUnit 5.4.2 (Jupiter) or higher
 - Apache OpenNLP 1.9.1
+- Log4j 2.11.2
+- Apache Commons-Lang3 3.9
+- Apache Commons-Validator 1.6
+
