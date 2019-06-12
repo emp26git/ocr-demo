@@ -37,7 +37,7 @@ public class ScannerUI extends JFrame {
 
     private final JTextArea scanTextArea;
     private final JButton clearBtn;
-    private final JButton submitBtn;
+    private final JButton scanBtn;
 
 
     /**
@@ -107,9 +107,9 @@ public class ScannerUI extends JFrame {
                 });
         btnPanel.add(clearBtn);
 
-        submitBtn = new JButton("Submit");
-        submitBtn.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        submitBtn.addActionListener(
+        scanBtn = new JButton("Scan");
+        scanBtn.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        scanBtn.addActionListener(
                 new ActionListener() {
 
                     @Override
@@ -135,8 +135,8 @@ public class ScannerUI extends JFrame {
                                     if (contactInfo != null) {
                                         final StringBuilder msgBuf = new StringBuilder("Name: ");
 
-                                        msgBuf.append(contactInfo.getName()).append("\nEmail: ").append(contactInfo.getEmailAddress())
-                                            .append("\nPhone: ").append(contactInfo.getPhoneNumber());
+                                        msgBuf.append(contactInfo.getName()).append("\nPhone: ").append(contactInfo.getPhoneNumber())
+                                            .append("\nEmail: ").append(contactInfo.getEmailAddress());
                                         message = msgBuf.toString();
 
                                     }
@@ -150,7 +150,7 @@ public class ScannerUI extends JFrame {
 
                     }
                 });
-        btnPanel.add(submitBtn);
+        btnPanel.add(scanBtn);
 
     }
 
