@@ -15,6 +15,7 @@ To access the application source, clone the Git repository to a directory on you
 
 After cloning the repository, the application can be built using Maven:
 ```
+% cd ocr-demo/ocr-demo
 % mvn clean package
 ```
 
