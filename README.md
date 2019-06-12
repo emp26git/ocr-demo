@@ -8,16 +8,25 @@ After the data has been entered, clicking the Scan button will trigger the proce
 Once the data has been processed, a notification dialog is displayed to show the processing results for the Name, Phone, and Email.
 
 The application is a stand-alone Java Jar file that can be built with Maven:
-- mvn clean package
+{code}
+mvn clean package
+{code}
 
 This should build the executable jar file:
-- target/ocr-demo-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+{code}
+ocr-demo/target/ocr-demo-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+{code}
 
 To execute the application, "cd" to the target directory and run:
-- java -jar ocr-demo-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+{code}
+% cd target
+% java -jar ocr-demo-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+{code}
 
 There is a set of unit tests for the main BusinessCardParser class. These tests can be executed via Maven:
-- mvn test
+{code}
+% mvn test
+{code}
 
 This application requires:
 - Java JDK 8 update 212 or higher
