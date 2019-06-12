@@ -20,5 +20,5 @@ There is a set of unit tests for the main BusinessCardParser class. These tests 
 - mvn test
 
 This application requires:
-- Java 8 update 212 or higher
+- Java JDK 8 update 212 or higher
 - Maven 3.6.1 or higher
