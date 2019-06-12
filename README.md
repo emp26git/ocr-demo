@@ -3,6 +3,14 @@ This is an application that accepts a single String of data input which is meant
 
 In order to support user input, I created a Java Swing UI with a TextArea component where the contact card data can be entered. After the data has been entered, clicking the Scan button will trigger the processing of the data by the BusinessCardParser class. Once the data has been processed, a notification dialog is displayed to show the processing results for the Name, Phone, and Email.
 
-The application is a stand-alone Java Jar file that can be built with Maven
+The application is a stand-alone Java Jar file that can be built with Maven:
+     mvn clean package
 
-There is a set of unit tests for the main BusinessCardParser class. These tests can be executed via Maven.
+This should build the executable jar file: 
+     target/ocr-demo-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+
+To execute the application, "cd" to the target directory and run:
+     java -jar ocr-demo-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+
+There is a set of unit tests for the main BusinessCardParser class. These tests can be executed via Maven:
+     mvn test
