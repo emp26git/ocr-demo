@@ -18,3 +18,7 @@ To execute the application, "cd" to the target directory and run:
 
 There is a set of unit tests for the main BusinessCardParser class. These tests can be executed via Maven:
 - mvn test
+
+This application requires:
+- Java 8 update 212 or higher
+- Maven 3.6.1 or higher
